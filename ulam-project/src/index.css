@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Your custom CSS below */
+
+.testimonial-marquee {
+  animation: testimonial-marquee 50s linear infinite; 
+}
+
+.testimonial-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes testimonial-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
