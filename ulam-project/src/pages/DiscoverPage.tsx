@@ -46,7 +46,7 @@ type PaginationMeta = {
 } | null;
 
 const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api";
+  import.meta.env.VITE_API_BASE_URL || "/api";
 
 // helper that supports { data: [...] } or [...]
 const unwrapCollection = <T,>(payload: unknown): T[] => {

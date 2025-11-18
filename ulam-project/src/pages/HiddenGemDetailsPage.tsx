@@ -5,7 +5,7 @@ import AnimatedSection from "../components/AnimatedSection";
 import { useAuth } from "../context/AuthContext";
 
 const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api";
+  import.meta.env.VITE_API_BASE_URL || "/api";
 
 type Locality = {
   id: number;

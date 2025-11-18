@@ -3,7 +3,7 @@ import React, {createContext, useContext, useState, useEffect,} from "react";
 import type { ReactNode } from "react";
 
 const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api";
+  import.meta.env.VITE_API_BASE_URL || "/api";
 
 type User = {
   id: number;
