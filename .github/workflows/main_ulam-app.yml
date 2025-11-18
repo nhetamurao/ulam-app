@@ -1,8 +1,19 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy PHP app to Azure Web App - ulam-app
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: read #This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
@@ -11,45 +22,68 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          tools: composer
-          extensions: mbstring, intl, pdo_mysql
 
-      # 1) Install PHP dependencies FIRST so artisan + vendor/autoload.php work
-      - name: Install PHP dependencies (composer)
-        if: hashFiles('composer.json') != ''
-        run: |
-          composer install \
-            --no-interaction \
-            --no-progress \
-            --prefer-dist
+      - name: Check if composer.json exists
+        id: check_files
+        uses: andstor/file-existence-action@v1
+        with:
+          files: 'composer.json'
 
-      # 2) Node / frontend stuff AFTER composer
+      - name: Run composer install if composer.json exists
+        if: steps.check_files.outputs.files_exists == 'true'
+        run: composer validate --no-check-publish && composer install --prefer-dist --no-progress
+
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '20'   # or the version you use locally
           cache: 'npm'
 
+      
       - name: Install frontend dependencies
-        if: hashFiles('package.json') != ''
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
-          fi
-
+        run: npm ci
+  
+  
       - name: Build frontend assets
-        if: hashFiles('package.json') != ''
-        run: |
-          if npm run | grep -q "build"; then
-            npm run build
-          else
-            echo "No build script found in package.json, skipping."
-          fi
+        run: npm run build
+
+      
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: php-app
           path: .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: php-app
+      
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_45E69B870B5C47DFBB68DE33FF7978F6 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1EF3192C82D9418FA181E7B2B5F15CF5 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7BDA0E3626514798A6B2F37AE1334A49 }}
+
+      - name: 'Deploy to Azure Web App'
+        uses: azure/webapps-deploy@v3
+        id: deploy-to-webapp
+        with:
+          app-name: 'ulam-app'
+          slot-name: 'Production'
+          package: .
+
+          
+
+
