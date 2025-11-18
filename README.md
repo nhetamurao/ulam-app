@@ -2,8 +2,7 @@
 A Full-Stack Web Application powered by React, Laravel, and Azure  
 
 ## ULAM - Link  
-[*(Attach once uploaded)*
-](https://ulam-app-h0a6a4adbebpb9d9.southeastasia-01.azurewebsites.net/)
+https://ulam-app-h0a6a4adbebpb9d9.southeastasia-01.azurewebsites.net/
 
 ## Project Overview
 
