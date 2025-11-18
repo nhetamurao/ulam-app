@@ -1,256 +1,126 @@
-ULAM – Discover Hidden Local Food Gems
-
-A community-driven platform for discovering small food businesses across the Philippines.
-
-⭐ Overview
-
-ULAM is a full-stack web application designed to help users discover, share, and review local “hidden gems”—small restaurants, food stalls, and home-cooked food businesses. The application provides an interactive search and filtering system, geographic navigation (Region → Province → Locality), user-generated posts, and a modern, responsive interface.
-
-This repository contains both the Laravel API backend and the React + TypeScript frontend built with Vite.
-
-📌 Features
-Frontend (React + TypeScript)
-
-Modern, responsive, and animated UI
-
-Discover page with:
-
-Search
-
-Price-level filtering (Budget / Mid / Premium)
-
-Pagination
-
-Hidden Gem detail view with photos and comments
-
-Protected routes using token-based authentication
-
-Custom AuthContext with localStorage persistence
-
-Smooth animations using Framer Motion
-
-Dynamic geographic browsing
-
-Backend (Laravel)
-
-Fully RESTful API
-
-Laravel Sanctum authentication
-
-CRUD operations for shops, comments, likes, and photos
-
-Geographic models (Region → Province → Locality)
-
-Pagination and multi-filter search logic
-
-Role-ready (users + roles pivot)
-
-Resource transformers for API structure
-
-Cloud Deployment (Azure)
-
-Hosted on Azure App Service
-
-Connected to Azure Database for MySQL Flexible Server
-
-CI/CD using GitHub Actions → Azure WebApp Deploy
-
-Custom Nginx configuration applied via startup script
-
-🛠️ Tech Stack
-Layer	Technologies
-Frontend	React, TypeScript, Vite, TailwindCSS, React Router, Framer Motion
-Backend	Laravel 11, PHP 8+, Laravel Sanctum
-Database	MySQL (Azure Flexible Server)
-Cloud Hosting	Azure App Service
-CI/CD	GitHub Actions
-Version Control	Git + GitHub
-📁 Project Structure
-ulam-webapp/
-│
-├── ulam-project/               # React frontend code
-│   ├── src/
-│   ├── public/
-│   ├── index.html
-│   └── package.json
-│
-├── app/                        # Laravel backend code
-├── public/                     # Merged frontend build artifacts
-├── routes/
-│   └── api.php                 # REST endpoints
-│   └── web.php                 # SPA catch-all route
-├── database/                   # Migrations, seeders, factories
-├── storage/
-├── composer.json
-└── README.md
-
-⚙️ Installation (Local Development)
-1. Clone the Repository
-git clone https://github.com/YOUR-ORG/ulam-webapp.git
-cd ulam-webapp
-
-Backend Setup – Laravel
-2. Install Composer Dependencies
-composer install
-
-3. Create your .env
-cp .env.example .env
-
-
-Set local DB credentials:
-
-DB_DATABASE=ulam_local
-DB_USERNAME=root
-DB_PASSWORD=
-
-4. Generate Key
-php artisan key:generate
-
-5. Run Migrations + Seeders
-php artisan migrate --seed
-
-6. Start Laravel
-php artisan serve
-
-
-Backend runs at:
-👉 http://127.0.0.1:8000
-
-Frontend Setup – React + Vite
-7. Navigate to the frontend
-cd ulam-project
-
-8. Install NPM dependencies
-npm install
-
-9. Create .env file
-VITE_API_BASE_URL=http://127.0.0.1:8000/api
-
-10. Run the frontend
-npm run dev
-
-
-Frontend runs at:
-👉 http://localhost:5173
-
-🔌 API Endpoints (Summary)
-Authentication
-Method	Endpoint	Description
-POST	/api/register	Register a new user
-POST	/api/login	Log in and return token
-Geographic Data
-
-| GET | /api/regions | List regions |
-| GET | /api/provinces | List provinces |
-| GET | /api/localities | List localities |
-
-Shops
-
-| GET | /api/shops | Paginated shop list + filters |
-| GET | /api/shops/{id} | Shop details |
-| POST | /api/shops (Auth) | Create new shop |
-| PUT | /api/shops/{id} (Auth) | Update shop |
-| DELETE | /api/shops/{id} | Delete shop |
-
-Comments
-
-| POST | /shops/{id}/comments | Add comment |
-| PUT | /comments/{id} | Edit comment |
-| DELETE | /comments/{id} | Delete |
-
-Likes
-
-| POST | /shops/{id}/like | Like shop |
-| DELETE | /shops/{id}/like | Unlike shop |
-
-🌐 Deployment (Azure)
-Azure Resources Used
-
-Azure App Service (Linux, PHP 8.x)
-
-Azure Database for MySQL Flexible Server
-
-Azure SSH Debug Console
-
-GitHub Actions (CI/CD)
-
-Custom Nginx configuration via startup script
-
-1. Environment Variables on Azure
-
-Configured under App Service > Configuration:
-
-APP_ENV=production
-APP_DEBUG=false
-APP_KEY=******
-DB_CONNECTION=mysql
-DB_HOST=******
-DB_DATABASE=******
-DB_USERNAME=******
-DB_PASSWORD=******
-VITE_API_BASE_URL=https://yourapp.azurewebsites.net/api
-VIEW_COMPILED_PATH=/home/site/wwwroot/storage/framework/views
-
-2. Nginx Fix (SPA Routing + /public directory)
-
-Inside /etc/nginx/sites-available/default:
-
-root /home/site/wwwroot/public;
-
-location / {
-    try_files $uri $uri/ /index.php?$query_string;
-}
-
-
-Persisted using /home/site/startup.sh.
-
-3. GitHub Actions CI/CD Workflow
-
-Automatically:
-
-Runs Composer
-
-Installs Node dependencies
-
-Builds Vite frontend
-
-Copies /dist → Laravel /public
-
-Deploys to Azure Web App
-
-🧪 Running Tests
-
-(If applicable)
-
-php artisan test
-
-🐞 Common Issues & Fixes
-1. .env missing on Azure
-
-Fix:
-
-touch .env
-nano .env
-
-2. Missing storage directories
-
-Fix:
-
-mkdir -p storage/framework/{views,cache,sessions}
-chmod -R 775 storage bootstrap/cache
-
-3. Localhost URL errors
-
-Always use:
-
-import.meta.env.VITE_API_BASE_URL || "/api"
-
-4. Nginx not loading React
-
-Ensure /public is in the root path.
-
-👥 Contributors
-
-Andreas N. Luy
-
-Kenneth Amurao
+# ULAM – Discover Hidden Local Food Gems  
+A Full-Stack Web Application powered by React, Laravel, and Azure  
+
+## ULAM - Link  
+[*(Attach once uploaded)*
+](https://ulam-app-h0a6a4adbebpb9d9.southeastasia-01.azurewebsites.net/)
+
+## Project Overview
+
+ULAM is a full-stack web application that helps users discover and share lesser-known food establishments in the Philippines. It provides a community-driven directory where users can browse by region, province, and locality, search for hidden food spots, and filter based on price preferences.
+
+Authenticated users can contribute posts, leave comments, like entries, and help grow the catalog of hidden gems. The platform also uses structured geographic data aligned with Philippine administrative divisions for organized browsing.
+
+### Objectives
+- Provide a platform for discovering local food “hidden gems”
+- Increase visibility of small and home-based food businesses
+- Enable user contributions through posts, comments, and reviews
+- Support structured geographic browsing (Region → Province → Locality)
+- Ensure secure authentication and user management
+- Deliver a responsive, interactive, and modern user experience
+- Deploy a fully cloud-hosted system using Microsoft Azure
+
+## Project Phases
+
+### Phase 1: Planning & System Design
+- Identified user needs and core features  
+- Designed system architecture (React frontend + Laravel API backend)  
+- Created normalized database schema for geographic and user-generated data  
+- Selected Azure as the hosting and deployment platform  
+
+### Phase 2: Backend Development (Laravel API)
+- Implemented RESTful endpoints for shops, comments, locations, and likes  
+- Configured Laravel Sanctum for secure token authentication  
+- Developed filtering logic (search, region, province, locality, price level)  
+- Created seeders for regions, provinces, localities, and sample hidden gems  
+- Implemented user roles and resource transformers  
+
+### Phase 3: Frontend Development (React + TypeScript)
+- Built a responsive SPA using React Router and TailwindCSS  
+- Implemented Discover Page with search and filters  
+- Developed Add/Edit Shop forms with validation  
+- Created animated sections using Framer Motion  
+- Built reusable components (cards, headers, dropdown menus)  
+- Added authentication context and protected routes  
+
+### Phase 4: Integration, Testing & Debugging
+- Ensured stable API communication using `VITE_API_BASE_URL`  
+- Fixed CORS issues, deployment paths, and Nginx routing  
+- Resolved GitHub Actions build directory errors  
+- Debugged API failures due to hardcoded localhost URLs  
+- Verified migrations, seeders, and live DB entries via Azure SSH  
+
+### Phase 5: Deployment & Cloud Configuration
+- Hosted Laravel API and React build on Azure App Service  
+- Connected to Azure Database for MySQL  
+- Implemented GitHub Actions CI/CD pipeline  
+- Updated Nginx config and startup script for SPA compatibility  
+- Verified application logs and API health in Azure environments  
+
+## Features Implemented
+
+### Core Application Features
+- Hidden gem discovery with images and descriptions  
+- Search, filters, and paginated listings  
+- Detailed shop pages with comments, photos, and metadata  
+- Geographic navigation (Region → Province → Locality)  
+- Price-level classification (Budget, Mid, Premium)  
+
+### User Features
+- Authentication (login, registration)  
+- Add, edit, delete personal posts  
+- Commenting and liking  
+- Profile page showing user activity (shops + reviews)  
+
+### Frontend (React)
+- Responsive UI using TailwindCSS  
+- Smooth animations using Framer Motion  
+- Reusable card-based components  
+- Auto-closing navbar dropdown  
+- AuthContext with token persistence  
+
+### Backend (Laravel)
+- RESTful API endpoints  
+- Laravel Sanctum authentication  
+- Shop CRUD, comments, likes, photos  
+- Input validation and resource transformers  
+- Geographic data relations and queries  
+
+### Cloud & Infrastructure
+- Azure App Service hosting  
+- Azure MySQL Flexible Server  
+- CI/CD via GitHub Actions  
+- Custom Nginx rules for SPA routing  
+- Manual Azure SSH configuration  
+- Environment variable management through App Service  
+
+## Testing
+- Verified all API endpoints for authentication, shops, and comments  
+- Ensured frontend communicates with `/api` using dynamic Vite env  
+- Confirmed migrations and seeders execute correctly on Azure  
+- Validated Discover Page filters (region, province, locality, price, search)  
+- Debugged React build loading issue (missing dist copy step)  
+- Resolved Nginx routing issues causing white screen on refresh  
+- Tested profile, posting, commenting, and protected actions  
+
+## What We Learned
+- Designing a full-stack application using React + Laravel  
+- Creating scalable REST APIs with filtering and pagination  
+- Managing authentication using Laravel Sanctum  
+- Integrating frontend and backend through shared environment variables  
+- Debugging cloud deployment issues (Nginx, permissions, environment paths)  
+- Working with Azure App Service and Azure MySQL  
+- Setting up CI/CD pipelines through GitHub Actions  
+- Troubleshooting SPA routing in cloud containers  
+- Collaborating efficiently using Git and branch workflows  
+
+## Future Enhancements
+- Enable direct image uploads (local or Azure Blob Storage)  
+- Implement admin moderation panel  
+- Add map-based visualization for shops  
+- Introduce fuzzy search or full-text indexing  
+- Allow multi-photo uploads and gallery views  
+- Integrate Google or Microsoft social login  
+- Add ratings and bookmarking features  
+- Implement caching for better performance  
+- Add gamification (user badges, levels, contributions)  
